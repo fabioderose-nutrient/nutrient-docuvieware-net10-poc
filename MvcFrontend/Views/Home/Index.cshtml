@@ -1,0 +1,87 @@
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8" />
+    <title>DocuVieware - server-side rendering PoC (.NET 10)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+        body { margin: 0; height: 100%; font-family: "Segoe UI", Arial, sans-serif; display: flex; flex-direction: column; }
+        #topBar { background: #1e293b; color: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        #topBar h1 { font-size: 16px; margin: 0 16px 0 0; font-weight: 600; }
+        #topBar select, #topBar button { font-size: 14px; padding: 6px 10px; border-radius: 4px; border: none; }
+        #topBar button { background: #2563eb; color: #fff; cursor: pointer; }
+        #topBar button:hover { background: #1d4ed8; }
+        #status { font-size: 13px; opacity: 0.9; }
+        #dvContainer { flex: 1; min-height: 0; }
+    </style>
+</head>
+<body>
+    <div id="topBar">
+        <h1>DocuVieware PoC (.NET 10) - documents streamed server side</h1>
+        <label for="fileSelect">Server document:</label>
+        <select id="fileSelect"></select>
+        <button id="loadButton">Load in viewer</button>
+        <span id="status"></span>
+    </div>
+    <div id="dvContainer">
+        @Html.Raw(ViewBag.DocuViewareControlHtml)
+    </div>
+
+    <script>
+        var backendBaseUrl = "@(ViewBag.BackendBaseUrl ?? "http://localhost:65088")";
+
+        $(document).ready(function () {
+            // The documents list only exposes file names; bytes never reach the browser as files.
+            $.get(backendBaseUrl + "/api/DocuViewareREST/GetDocumentsList", function (files) {
+                var select = $("#fileSelect");
+                select.empty();
+                files.forEach(function (name) {
+                    select.append($("<option>").val(name).text(name));
+                });
+            });
+
+            $("#loadButton").on("click", function () {
+                var fileName = $("#fileSelect").val();
+                if (!fileName) { return; }
+                $("#status").text("Loading " + fileName + " ...");
+
+                if (fileName.toLowerCase().lastIndexOf(".xml") === fileName.length - 4) {
+                    // XML only: not a native DocuVieware format, so a server-side custom
+                    // action remaps it to .txt (LoadFromStream with a .txt DocumentName)
+                    // before loading it into the session.
+                    DocuViewareAPI.PostCustomServerAction("DocuVieware1", true, "loadServerFile", fileName,
+                        function (result) {
+                            if (result && result.indexOf("OK:") === 0) {
+                                $("#status").text("Loaded: " + fileName + " (rendered as " + result.substring(3) + ")");
+                            } else {
+                                $("#status").text(result);
+                            }
+                        },
+                        function (error) {
+                            $("#status").text("Custom action failed: " + (error || "see server log"));
+                        });
+                    return;
+                }
+
+                // Every native format (PDF, Office, images, EML/MSG, TXT): standard
+                // LoadFromUri. The DocuVieware SERVER fetches the document from the
+                // backend endpoint and streams rendered pages to the browser.
+                DocuViewareAPI.LoadFromUri("DocuVieware1",
+                    backendBaseUrl + "/api/DocuViewareREST/GetDocument/" + encodeURIComponent(fileName),
+                    function () {
+                        $("#status").text("Loaded: " + fileName);
+                    },
+                    function (error) {
+                        $("#status").text("Load failed: " + (error || "unknown error"));
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

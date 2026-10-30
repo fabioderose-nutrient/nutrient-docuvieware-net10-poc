@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DocuVieware for .NET (cross-platform: Windows, Linux, macOS) -->
+    <PackageReference Include="DocuVieware.API" Version="3.4.2" />
+  </ItemGroup>
+
+</Project>

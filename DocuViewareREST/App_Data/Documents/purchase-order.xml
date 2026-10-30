@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<purchaseOrder number="PO-2026-0087" date="2026-03-12">
+  <buyer>
+    <name>Sample Retail Group</name>
+    <email>purchasing@example.com</email>
+  </buyer>
+  <supplier>
+    <name>Example Supplies Ltd.</name>
+    <email>orders@example.com</email>
+  </supplier>
+  <lines>
+    <line sku="PPR-005" quantity="40" unitPrice="8.40">Printer paper A4 (box of 5 reams)</line>
+    <line sku="PEN-050" quantity="25" unitPrice="6.10">Ballpoint pens (box of 50)</line>
+    <line sku="NTS-012" quantity="10" unitPrice="4.25">Sticky notes (pack of 12)</line>
+  </lines>
+  <total currency="USD">531.00</total>
+</purchaseOrder>

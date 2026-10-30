@@ -1,0 +1,56 @@
+From: Example Supplies Ltd. <orders@example.com>
+To: Sample Retail Group <purchasing@example.com>
+Subject: Delivery update for PO-2026-0087
+Date: Wed, 11 Mar 2026 09:30:00 +0000
+Message-ID: <sample-11@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============4545674520246139880=="
+
+--===============4545674520246139880==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+Your order PO-2026-0087 left our warehouse this morning.
+Expected delivery: Friday 13 March, before noon.
+
+Kind regards,
+Customer Service
+
+--===============4545674520246139880==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+<html>
+<body style='font-family: Arial, sans-serif'>
+<h2 style='color:#1e3a73'>Delivery update</h2>
+<p>Hello,</p>
+<p>Your order <strong>PO-2026-0087</strong>
+left our warehouse this morning.</p>
+<table border='1' cellpadding='6' cellspacing='0'>
+<tr>
+<th>Item</th>
+<th>Quantity</th>
+</tr>
+<tr>
+<td>Printer paper A4 (box of 5 reams)</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Ballpoint pens (box of 50)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Sticky notes (pack of 12)</td>
+<td>10</td>
+</tr>
+</table>
+<p>Expected delivery: Friday 13 March, before noon.</p>
+<p>Kind regards,<br>Customer Service</p>
+</body>
+</html>
+
+--===============4545674520246139880==--
